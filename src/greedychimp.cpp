@@ -3,32 +3,21 @@
 #include "MinHook.h"
 #include <Windows.h>
 #include <iostream>
+#include "osclient.h"
 
 void UnhookMouseHook() {
-#ifdef ATARAXIA
     HHOOK jagexMouseHook =
-        *(HHOOK *)((uintptr_t)GetModuleHandleA("ataraxiaclient.exe") +
-                   Jamflex::MouseHookLoc);
-#else
-    HHOOK jagexMouseHook =
-        *(HHOOK *)((uintptr_t)GetModuleHandleA("osclient.exe") + 0x2931708);
-#endif
+        *(HHOOK *)((uintptr_t)GetModuleHandleA("osclient.exe") + osclient.MouseHook);
 
     if (UnhookWindowsHookEx(jagexMouseHook) != 0)
         std::cout << "Mouse hook boom.\n";
 }
 
 uintptr_t Entry(HMODULE hModule) {
-    // Console - Ataraxia has some checks for console input/output.
-    // Didn't bother to check when they fire. I don't actually want to bot was
-    // just bored.
     AllocConsole();
     FILE *f;
     freopen_s(&f, "CONOUT$", "w", stdout);
 
-    // Hitting bps while their mouse hook is in place will cause annoying mouse
-    // stuttering. This also prevents mouse movement analysis, because you just
-    // don't send any data.
     UnhookMouseHook();
 
     auto PlaceHook = [](uintptr_t location, void *jmpTo, fn *original) {
@@ -42,8 +31,10 @@ uintptr_t Entry(HMODULE hModule) {
     // MH_CreateHookApi(L"opengl32.dll", "wglSwapBuffers", &hwglSwapBuffers,
     //                  reinterpret_cast<void **>(&oSwapBuffers));
 
-    PlaceHook(0xbc840, &NodeAction, &oNodeAction);
-    PlaceHook(0xbce30, &EntityAction, &oEntityAction);
+    PlaceHook(osclient.DoAction, &DoAction, &oDoAction);
+
+    // PlaceHook(0xbc840, &NodeAction, &oNodeAction);
+    // PlaceHook(0xbce30, &EntityAction, &oEntityAction);
 
     MH_EnableHook(MH_ALL_HOOKS);
 

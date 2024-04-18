@@ -5,7 +5,7 @@
 
 namespace Jamflex {
 const static uintptr_t clientBase =
-    reinterpret_cast<uintptr_t>(GetModuleHandleA("ataraxiaclient.exe"));
+    reinterpret_cast<uintptr_t>(GetModuleHandleA("osclient.exe"));
 
 const static uintptr_t MouseHookLoc = 0xbc4cd8;
 } // namespace Jamflex

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 set(CMAKE_CXX_STANDARD 23)
-set(VCPKG_TARGET_TRIPLET x64-windows-static CACHE STRING "target triplet" FORCE)
+set(VCPKG_TARGET_TRIPLET x64-windows-static-md CACHE STRING "target triplet" FORCE)
 set(VCPKG_CRT_LINKAGE "dynamic" FORCE)
 set(VCPKG_LINKER_FLAGS "RELEASE")
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
@@ -18,7 +18,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp")
 # file(GLOB_RECURSE WREN RELAITVE ${CMAKE_SOURCE_DIR} "C:/Users/Carter/vcpkg/packages/wren_x64-windows/include")
 
 # Replace this with your vcpkg path.
-include(C:/Users/l0l0l0l/vcpkg/scripts/buildsystems/vcpkg.cmake)
+include(C:/Users/owcar/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
